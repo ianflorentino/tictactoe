@@ -1,0 +1,96 @@
+body {
+	text-align: center;	
+}
+
+.space {
+	width: 155px;
+	height: 150px;
+	display: inline-block;
+	margin: -2px;
+	border-left: 5px solid black;
+	border-bottom: 5px solid black;
+	box-sizing: border-box;
+	padding: 4px;
+}
+
+.content {
+	background-color: #e3e3e3;
+	width: 139px;
+	height: 138px;
+	border-radius: 10px;
+}
+
+.left {
+	border-left: 5px solid white;
+}
+
+.bottom {
+	border-bottom: 0px;
+}
+
+.mobile-mode {
+	display: none;
+}
+
+.game-board {
+	width: 460px;	
+	display: inline-block;
+	margin-top: 20px;
+}
+
+.player {
+	display: inline-block;
+	vertical-align: top;
+	font-size: 80px;
+	margin-top: 80px;
+}
+
+#p1 {
+	color: green;
+}
+
+#p2 {
+	color: blue;
+}
+@media (max-width: 1060px) {
+	.space {
+		width: 80px;
+		height: 80px;		
+		display: inline-block;
+		margin: -2px;
+		border-left: 3px solid black;
+        	border-bottom: 3px solid black;
+        	box-sizing: border-box;
+        	padding: 2px;}
+	
+	.content {
+		width: 70px;
+		height: 73px;
+		background-color: #e3e3e3;	
+	}
+
+	.left {
+		border-left: 3px solid white;
+	}
+	
+	.bottom {
+		border-bottom: 0px;
+	}
+	.game-board {
+		width: 250px;	
+		display: inline-block;
+	}	
+
+	.player {
+		display: none;
+	}
+	
+	.mobile-mode {
+		display: block;
+	}
+
+	.mobile-players {
+		font-size: 20px;
+	}
+
+}
