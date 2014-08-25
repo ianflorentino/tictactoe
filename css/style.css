@@ -1,5 +1,6 @@
 body {
-	text-align: center;	
+	text-align: center;
+	
 }
 
 .space {
@@ -37,13 +38,22 @@ body {
 	width: 460px;	
 	display: inline-block;
 	margin-top: 20px;
+	background: url('../images/sf_background.jpg');
+	background-size: 100%;
+	background-repeat: no-repeat;
+	
 }
 
 .player {
 	display: inline-block;
 	vertical-align: top;
-	font-size: 80px;
-	margin-top: 80px;
+	font-size: 40px;
+	margin: 15px 40px 0px 40px;
+}
+
+h1 {
+	font-size: 65px;
+	margin: 1px 0px 1px 0px;
 }
 
 #p1 {
@@ -102,5 +112,19 @@ body {
 	.mobile-players {
 		font-size: 20px;
 	}
+	
+	#mobile-p1 {
+		color: green;
+		display: inline-block;
+	}
 
+	#mobile-p2 {
+		color: blue;
+		display: inline-block;
+		margin-left: 25px;
+	}
+
+	h1 {
+		font-size: 50px;
+	}
 }

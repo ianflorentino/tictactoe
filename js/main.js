@@ -5,21 +5,29 @@ app.controller('ticTacController', ['$scope', function($scope){
 			["","",""],
        			["","",""]];
        
-	$scope.className  = "none";
 	player1_turn      = true;
 	player1_select    = 0;
 	num_check         = $scope.cells.length;
-	winner            = 0;
+	winner            = false;
 	player1	          = "blue";
 	player2           = "green";	
 
 	$scope.switchTurn = function() {
 		player1_turn = !player1_turn;
 	}
-       	
+
+	$scope.changeColor = function() {
+		return player1_turn;
+	}	
+	
+	$scope.isWinner = function() {
+		return winner;		
+	}
+
 	$scope.selectBox = function(x,y) {
 		$scope.cells[x][y] = (player1_turn ? 'X' : 'O');	
 		winnerCond();
+		console.log("winner combo:" + winnerCond());
 		$scope.checkDiagonal($scope.cells);	
 		$scope.checkWinner($scope.cells);
 		$scope.switchTurn(); 
@@ -41,7 +49,8 @@ app.controller('ticTacController', ['$scope', function($scope){
 		for (var i = 0; i < num_check; i++) {
 			diagonal_array1.push(array[i][i]);
 			if (diagonal_array1.join('') == winnerCond()) {
-				console.log((player1_turn) ? "player 1 wins" : "[layer 2 wins");
+				winner = true;
+				console.log((player1_turn) ? "player 1 wins:diagonal1" : "player 2 wins:diagonal1");
 				return;
 			}
 		}
@@ -53,7 +62,8 @@ app.controller('ticTacController', ['$scope', function($scope){
 			j -= 1
 			
 			if (diagonal_array2.join('') == winnerCond()) {
-				console.log((player1_turn) ? "player 1 wins" : "player 2 wins");
+				winner = true;
+				console.log((player1_turn) ? "player 1 wins:diagonal2" : "player 2 wins:diagonal2");
 				return;
 			}
 		
@@ -63,29 +73,26 @@ app.controller('ticTacController', ['$scope', function($scope){
       	$scope.checkWinner = function(array) {	
 		for (var i = 0; i < num_check; i++){
 			if (array[i].join('') == winnerCond()){
-				console.log((player1_turn) ? "player 1 wins" : "player 2 wins");
+				winner = true;
+				console.log((player1_turn) ? "player 1 wins:checkwinner:row" : "player 2 wins:checkwinner:row");
 				return 
 			}
-			console.log(array[i].join(''));
+			
 		};
 		
-		vertical_array = [];	
+		vertical_array = [[""],[""],[""]];	
 		for (var i = 0; i < num_check; i++) {
 			for (var j = 0; j < num_check; j++) {
-				vertical_array.push(array[j][i]);
-				if (vertical_array.length > num_check) {
-					for (var h = 0; h < num_check; h++) {
-						vertical_array.shift();
-						if (vertical_array.join('') == winnerCond()) {
-							break;
-						}
-					}
-				}
-				if (vertical_array.join('') == winnerCond()) {
-					console.log((player1_turn) ? "player 1 wins" : "player 2 wins");
+				vertical_array[i].push(array[j][i]);
+				console.log(vertical_array[i]);
+				if (vertical_array[i].join('') == winnerCond()) {
+					winner = true;
+					console.log((player1_turn) ? "player 1 wins: checkwinner" : "player 2 wins:checkwinner");
 					return;
 				}
-			}
+					
+			}		
+			
 		}
 		
       	}
