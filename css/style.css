@@ -18,6 +18,7 @@ body {
 	width: 139px;
 	height: 138px;
 	border-radius: 10px;
+	vertical-align: middle;
 }
 
 .left {
@@ -52,6 +53,15 @@ body {
 #p2 {
 	color: blue;
 }
+
+.blue {
+	background-color: blue;
+}
+
+.green {
+	background-color: green;
+}
+
 @media (max-width: 1060px) {
 	.space {
 		width: 80px;

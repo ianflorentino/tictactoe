@@ -24,7 +24,7 @@
 			</div>
 			<div class="game-board">
 				<div ng-repeat="block in cells">
-					<div ng-repeat="cell in block track by $index"  ng-class="{space:true, left:($index%3 == 0), bottom:($parent.$index == 2)}"><div class="content" ng-click="selectBox($parent.$index, $index)"></div></div>
+					<div ng-repeat="cell in block track by $index"  ng-class="{space:true, left:($index%3 == 0), bottom:($parent.$index == 2)}"><div class="content" ng-style="myStyle" ng-click="player1_turn = !player1_turn; myStyle={'background-color': (player1_turn) ? 'blue' : 'green'}; selectBox($parent.$index,$index)"></div>{{player1_turn}}</div>
 				</div>	
 			</div>	
 			<div class="player" id="p2">
