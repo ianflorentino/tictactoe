@@ -10,7 +10,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 
 	ref.$bind($scope, 'box');
 	$scope.$watch('box', function(){
-		console.log('hello')
+		console.log('hello');
 	});
 
 	$scope.player1_turn      = true;	
@@ -22,16 +22,14 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 		$scope.player1_turn = !$scope.player1_turn;
 	}
 
-	$scope.isRed = function() {
-		if ($scope.selected == 'X') {
-			return true;
+	$scope.isRed = function(x,y) {
+		if ($scope.box.cells[x][y] == 'X') {
+			console.log($scope.box.cells[x][y]);
+			return 'red';
+		} else if ($scope.box.cells[x][y] == 'O') {
+			return 'white';
 		}
 	}
-	
-	$scope.changeColor = function(t,u) {
-		$scope.selected = $scope.box.cells[t][u];
-		console.log($scope.selected);
-	}	
 	
 	$scope.isWinner = function() {
 		return $scope.winner;		

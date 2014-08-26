@@ -12,11 +12,11 @@
 
         <link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.js"></script>
 	<!-- Firebase -->
 	<script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
 	<!-- AngularFire -->
-	<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
 	<!--<script src ="http://code.angularjs.org/1.2.0-rc.2/angular-animate.js" type="text/javascript" charset="utf-8"></script>-->
 	<!--<script src ="http://code.angularjs.org/1.2.0-rc.2/angular-route.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/main.js"></script>
@@ -29,7 +29,7 @@
 		<div class="playing-field">
 			<div class="game-board">
 				<div ng-repeat="block in box.cells">
-					<div ng-repeat="cells in block track by $index"  ng-class="{space:true}"><div class="content" ng-class="{'red': isRed()}" ng-click="changeColor($parent.$index,$index);selectBox($parent.$index,$index)"></div>{{player}}</div>
+					<div ng-repeat="cells in block track by $index"  ng-class="{space:true}"><div class="content" ng-class="isRed($parent.$index,$index)" ng-click="selectBox($parent.$index,$index)"></div>{{player}}</div>
 				</div>	
 			</div>		
 			<div class="mobile-mode">
