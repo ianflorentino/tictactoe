@@ -4,17 +4,6 @@ body {
 	
 }
 
-.space {
-	width: 156px;
-	height: 150px;
-	display: inline-block;
-	margin: -2px;
-	border-left: none;
-	border-bottom: none;
-	box-sizing: border-box;
-	padding: 4px;
-}
-
 .content {
 	background-color: #e3e3e3;
 	width: 138px;
@@ -23,6 +12,17 @@ body {
 	vertical-align: middle;
 	opacity: 0.5;
 	margin-left:1px;
+}
+
+.space {
+	width: 156px;
+	height: 150px;
+	display: inline-block;
+	margin: -2px;
+	border-left: none;
+	border-bottom none;
+	box-sizing: border-box;
+	padding: 4px;
 }
 
 .red {
@@ -42,21 +42,20 @@ body {
 
 .game-board {
 	width: 460px;	
-	display: inline-block;
-	margin-top: 20px;
-	
+	background: url('../images/sf.png');	
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
 }
 
-.playing-field {
-	
-	background-size: 100% 500px;
+.playing-field {	
 	background-repeat: no-repeat;
 	box-sizing: border box;
+	margin: auto;
 }
 
 .player {
 	font-size: 20px;
-	margin: 0px 80px 0px 80px;;
+	margin: 0;
 }
 
 .header {
@@ -77,22 +76,79 @@ h1 {
 	color: red;
 }
 
-.blue {
-	background-color: blue;
+.character {
+	height: 96px;
+	width: 93px;
 }
 
-.green {
-	background-color: green;
+
+
+#left-char {
+	background: url('../images/ryu.png');
+	opacity: 1;
+	height: 96px;
+	width: 90px;
 }
 
-@media (max-width: 1060px) {
+#right-char {
+	background: url('../images/ken.png');
+	opacity: 1;
+	height: 96px;
+	width: 93px;
+}
+
+.divider {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-top: 80px;
+}
+
+.animate {
+	 -webkit-animation: stand steps(8) 1.2s
+}
+
+@-webkit-keyframes stand {
+	from { background-position-x: 0px; }
+	to { background-position-x: -757px; }
+}
+
+.animate-hide {
+	  -webkit-transition:all linear 0.5s;
+	  transition:all linear 0.5s;
+	  margin: auto;
+	  opacity:1;
+		  	      
+}
+
+.animate-hide.ng-hide {
+	  line-height:0;
+	  opacity:0;
+	  padding:0 10px;
+}
+
+.winPrompt {
+	position: absolute;
+	height; 250px;
+	width: 250px;
+	background-color: red;
+	z-index: 10;
+}
+
+.mainboard {
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+}
+@media (max-width: 1080px) {
 	.space {
 		width: 80px;
 		height: 80px;		
 		display: inline-block;
 		margin: -2px;
         	box-sizing: border-box;
-        	padding: 2px;}
+        	padding: 2px;
+	}
 	
 	.content {
 		width: 70px;
@@ -102,7 +158,10 @@ h1 {
 
 	.game-board {
 		width: 250px;	
-		display: inline-block;
+		background: url('../images/sf.png');
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-size: 90%;
 	}	
 
 	.player {
@@ -118,17 +177,44 @@ h1 {
 	}
 	
 	#mobile-p1 {
-		color: green;
+		color: red;
 		display: inline-block;
 	}
 
 	#mobile-p2 {
-		color: blue;
+		color: red;
 		display: inline-block;
 		margin-left: 25px;
 	}
 
+	#left {
+		display: none;
+	}
+
+	#right {
+		display: none;
+	}
+	
 	h1 {
 		font-size: 50px;
 	}
+	
+	.red {
+		background-color: red;
+		opacity: 1;
+	}
+
+	.white {
+		background-color: white;
+		opacity: 1;
+	}
+	
+	.winPrompt {
+		position: absolute;
+		height; 100px;
+		width: 180px;
+		background-color: red;
+		z-index: 10;
+	}
+
 }

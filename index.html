@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>An HTML Page</title>
+		<title>Tic Tac FIGHTER</title>
 
 		<!--[if lt IE 9]>
 		<script src="js/html5shiv.js"></script>
@@ -17,30 +17,40 @@
 	<script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
 	<!-- AngularFire -->
 	<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
-	<!--<script src ="http://code.angularjs.org/1.2.0-rc.2/angular-animate.js" type="text/javascript" charset="utf-8"></script>-->
+	<script src ="http://code.angularjs.org/1.2.0-rc.2/angular-animate.js" type="text/javascript" charset="utf-8"></script>
 	<!--<script src ="http://code.angularjs.org/1.2.0-rc.2/angular-route.js" type="text/javascript" charset="utf-8"></script>-->
 	<script src="js/main.js"></script>
 	</head>
 
-	<body ng-controller="ticTacController">
-		<div class="player header" id="p1">Player 1 Wins: 0</div>
-		<h1 class="header">Tic Tac FIGHTER</h1>
-		<div class="player header" id="p2">Player 2 Wins: 0</div>
-		<div class="playing-field">
-			<div class="game-board">
+	<body ng-controller="ticTacController">	
+		<div class="winPrompt mainboard animate-hide" ng-show="ifWin()">Wins</div>
+		<div class="divider" id="left">
+			<div class="player header" id="p1">
+				Player 1 Wins: 0
+			</div>
+			<div class="character" ng-class="animate()" id="left-char"></div>
+		</div>	
+		<div class="playing-field divider">
+			<div class="game-board mainboard">
 				<div ng-repeat="block in box.cells">
 					<div ng-repeat="cells in block track by $index"  ng-class="{space:true}"><div class="content" ng-class="isRed($parent.$index,$index)" ng-click="selectBox($parent.$index,$index)"></div>{{player}}</div>
 				</div>	
 			</div>		
-			<div class="mobile-mode">
-				<div class="mobile-players">
-					<span id="mobile-p1">
-						Player 1</br>
-					</span>
-					<span id="mobile-p2">
-						Player 2</br>
-					</span>
-				</div>
+		</div>
+		<div class="divider" id="right">
+			<div class="player header" id="p2">
+				Player 2 Wins: 0
+			</div>
+			<div class="character" ng-class="animate()" id="right-char"></div>
+		</div>
+		<div class="mobile-mode">
+			<div class="mobile-players">
+				<span id="mobile-p1">
+					Player 1</br>
+				</span>
+				<span id="mobile-p2">
+					Player 2</br>
+				</span>
 			</div>
 		</div>
 	</body>

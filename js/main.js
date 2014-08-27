@@ -1,42 +1,71 @@
-var app = angular.module('ticTacColor', ["firebase"])
+var app = angular.module('ticTacColor', ["firebase","ngAnimate"])
 
 app.controller('ticTacController', ['$scope', '$firebase', function($scope, $firebase){
 	$scope.box = {cells: 
 			[["","",""],
 			["","",""],
-       			["","",""]]};
+       			["","",""]], 
+			player1_turn:true,
+			player1_score:0, 
+			player2_score:0,
+			winner:false};
 	
 	var ref = $firebase(new Firebase("https://tictacfighter.firebaseio.com/data"));
 
 	ref.$bind($scope, 'box');
 	$scope.$watch('box', function(){
-		console.log('hello');
+		console.log("player 1 turn is " + $scope.box.player1_turn);
 	});
 
-	$scope.player1_turn      = true;	
-	$scope.num_check         = $scope.box.cells.length;
-	$scope.winner            = false;
-	$scope.selected          = 0;
+	$scope.num_check = $scope.box.cells.length;
+	$scope.move = true;
 
+	$scope.ifWin = function() {
+		return $scope.box.winner
+	}
+	
 	$scope.switchTurn = function() {
-		$scope.player1_turn = !$scope.player1_turn;
+		if ($scope.box.winner == false) {
+			$scope.box.player1_turn = !$scope.box.player1_turn;
+			console.log("switched turns");
+		}
 	}
 
 	$scope.isRed = function(x,y) {
-		if ($scope.box.cells[x][y] == 'X') {
-			console.log($scope.box.cells[x][y]);
-			return 'red';
-		} else if ($scope.box.cells[x][y] == 'O') {
+		console.log($scope.box.cells[x][y]);
+		if ($scope.box.cells[x][y] === 'X') {
 			return 'white';
+		} else if ($scope.box.cells[x][y] === 'O') {
+			return 'red';
 		}
 	}
 	
+	$scope.animate = function() {
+		console.log($scope.move);
+		$scope.move = !$scope.move;
+		if ($scope.move) {
+			return 'animate'
+		} else {
+			return ''
+		}
+	}
+
 	$scope.isWinner = function() {
-		return $scope.winner;		
+		if ($scope.box.winner == true) {
+			(player1_turn) ? $scope.box.player1_score +=1 : $scope.box.player1_score +=1;	
+		}	
 	}
 
 	$scope.selectBox = function(x,y) {
-		$scope.box.cells[x][y] = ($scope.player1_turn ? 'X' : 'O');	
+		if ($scope.box.cells[x][y] != "") {
+			alert("That spot is already taken!");
+			return
+		}else if ($scope.box.winner == true) {
+			alert("Play another game!");
+			return
+		}
+		$scope.box.cells[x][y] = ($scope.box.player1_turn ? 'X' : 'O');	
+		$scope.animate();
 		$scope.winnerCond();
 		console.log("winner combo:" + $scope.winnerCond());
 		$scope.checkDiagonal($scope.box.cells);	
@@ -47,7 +76,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 	}
 	
 	$scope.winnerCond = function() {
-		var choice  = ($scope.player1_turn ? 'X' : 'O');
+		var choice  = ($scope.box.player1_turn ? 'X' : 'O');
 	       	var winCombo = choice;
 		for (var i = 1; i < $scope.num_check; i++){
 			winCombo += choice
@@ -60,7 +89,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 		for (var i = 0; i < $scope.num_check; i++) {
 			diagonal_array1.push(array[i][i]);
 			if (diagonal_array1.join('') == $scope.winnerCond()) {
-				winner = true;
+				$scope.box.winner = true
 				console.log(($scope.player1_turn) ? "player 1 wins:diagonal1" : "player 2 wins:diagonal1");
 				return;
 			}
@@ -73,7 +102,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 			j -= 1
 			
 			if (diagonal_array2.join('') == $scope.winnerCond()) {
-				winner = true;
+				$scope.box.winner = true;
 				console.log(($scope.player1_turn) ? "player 1 wins:diagonal2" : "player 2 wins:diagonal2");
 				return;
 			}
@@ -84,7 +113,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
       	$scope.checkWinner = function(array) {	
 		for (var i = 0; i < $scope.num_check; i++){
 			if (array[i].join('') == $scope.winnerCond()){
-				winner = true;
+				$scope.box.winner = true;
 				console.log(($scope.player1_turn) ? "player 1 wins:checkwinner:row" : "player 2 wins:checkwinner:row");
 				return 
 			}
@@ -97,7 +126,7 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 				vertical_array[i].push(array[j][i]);
 				console.log(vertical_array[i]);
 				if (vertical_array[i].join('') == $scope.winnerCond()) {
-					winner = true;
+					$scope.box.winner = true;
 					console.log(($scope.player1_turn) ? "player 1 wins: checkwinner" : "player 2 wins:checkwinner");
 					return;
 				}
