@@ -1,4 +1,4 @@
-var app = angular.module('ticTacColor', ["firebase","ngAnimate"])
+var app = angular.module('ticTacFighter', ["firebase","ngAnimate"])
 
 app.controller('ticTacController', ['$scope', '$firebase', function($scope, $firebase){
 	$scope.box = {cells: 
@@ -12,7 +12,9 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 			tie:false,
       move:true,
       moveCounter:0,
-      currPlayer:0};
+      currPlayer:0,
+      player_reset:false
+  };
 
 	var ref = $firebase(new Firebase("https://tictacfighter.firebaseio.com/data"));
   ref.$bind($scope, 'box');
@@ -23,25 +25,49 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 
 	$scope.num_check = $scope.box.cells.length;
   playerCount = 0;
-
-  onload = function() {
-    $scope.box.currPlayer += 1;
-  }
+  $scope.up = false;
+  $scope.down = false;
+  $scope.left = false;
+  $scope.right = false;
 
   $scope.reset = function() {
     console.log("reset went through");
-    $scope.box.cells= [["","",""],
-    ["","",""],
-    ["","",""]];
-    $scope.box.winner = false;
-    $scope.box.move = true;
-    $scope.box.tie = false;
+    if ($scope.box.player_reset) {
+      $scope.box.cells= [["","",""],
+                         ["","",""],
+                         ["","",""]];
+      $scope.box.winner = false;
+      $scope.box.player_reset = false;
+      $scope.box.player_turn = true;
+      $scope.box.move = true;
+      $scope.box.tie = false;
+      playerCount = 0;
+      $scope.up = false;
+      $scope.down = false;
+      $scope.left = false;
+      $scope.right = false;
+     }
+    else {
+      alert("Waiting on both players to reset");
+      $scope.box.cells= [["","",""],
+                         ["","",""],
+                         ["","",""]];
+      $scope.box.player_reset = true;
+      $scope.box.move = true;
+      $scope.box.tie = false;
+      playerCount = 0;
+      $scope.up = false;
+      $scope.down = false;
+      $scope.left = false;
+      $scope.right = false;
+    }
   }
   
   $scope.ifWin = function() {
     if ($scope.box.winner) {
       return $scope.box.winner;
-    } else if ($scope.box.tie) {
+    } 
+    else if ($scope.box.tie) {
       return $scope.box.tie;
     }
   };
@@ -55,10 +81,11 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 	};
 
 	$scope.isRed = function(x,y) {
-		console.log($scope.box.cells[x][y]);
+		console.log("is Red ran");
     if ($scope.box.cells[x][y] === 'X') {
       return 'white';
-		} else if ($scope.box.cells[x][y] === 'O') {
+		} 
+    else if ($scope.box.cells[x][y] === 'O') {
       return 'red';
 		}
 	};
@@ -78,6 +105,8 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 			($scope.box.player1_turn) ? $scope.box.player1_score +=1 : $scope.box.player2_score +=1;	
 		} 
 	};
+
+   //ALL THE MAGIC THAT HAPPENS (FUNCTIONS CALLED) WHEN A PLAYER CLICKS
 
 	$scope.selectBox = function(x,y) {
 		if ($scope.box.cells[x][y] != "") {
@@ -101,11 +130,8 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
       }
     }
     
-    console.log($scope.box.move);
     $scope.box.cells[x][y] = ($scope.box.player1_turn ? 'X' : 'O');	
-		$scope.animate();
 		$scope.winnerCond();
-    console.log($scope.box.move);
     console.log("winner combo:" + $scope.winnerCond());
 		$scope.checkDiagonal($scope.box.cells);	
 		$scope.checkWinner($scope.box.cells);
@@ -115,6 +141,8 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 		console.log($scope.box.cells[0], $scope.box.cells[1], $scope.box.cells[2]);	
 	};
 	
+  //WINNING CONDITIONS
+
 	$scope.winnerCond = function() {
 		var choice  = ($scope.box.player1_turn ? 'X' : 'O');
 	    var winCombo = choice;
@@ -140,6 +168,8 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
       }
     }  
   }
+
+  //CHECK FOR WINNER IN ALL DIRECTIONS
 
 	$scope.checkDiagonal = function(array) {
 		diagonal_array1 = [];
@@ -193,4 +223,126 @@ app.controller('ticTacController', ['$scope', '$firebase', function($scope, $fir
 		}
 		
   };
+ 
+  //ATTACK FUNCTIONS
+
+  $scope.attackUp = function() {
+   if ($scope.up) {
+      alert("You can only use this option once!");
+      return
+    } 
+   else if (!$scope.box.player1_turn) {
+      if (playerCount % 2 == 1) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    else if ($scope.box.player1_turn) {
+      if (playerCount != 0 && playerCount % 2 == 0) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    
+    $scope.box.cells[0] = $scope.box.cells[1];
+    $scope.box.cells[1] = $scope.box.cells[2];
+    $scope.box.cells[2] = ["","",""];
+    $scope.animate();
+    $scope.switchTurn();
+    $scope.up = true;
+  };
+  
+  $scope.attackDown = function() {
+    if ($scope.down) {
+      alert("You can only use this option once!");
+      return
+    }
+    else if (!$scope.box.player1_turn) {
+      if (playerCount % 2 == 1) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    else if ($scope.box.player1_turn) {
+      if (playerCount != 0 && playerCount % 2 == 0) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    
+    $scope.box.cells[2] = $scope.box.cells[1]; 
+    $scope.box.cells[1] = $scope.box.cells[0];
+    $scope.box.cells[0] = ["","",""];
+    $scope.animate();
+    $scope.switchTurn();
+    $scope.down = true;
+  }; 
+  
+  $scope.attackRight = function() {
+    if ($scope.right){
+      alert("You can only use this option once!");
+      return
+    }
+    else if (!$scope.box.player1_turn) {
+      if (playerCount % 2 == 1) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    else if ($scope.box.player1_turn) {
+      if (playerCount != 0 && playerCount % 2 == 0) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    } 
+    console.log("attack right ran");
+    for (var i = 0; i < $scope.num_check; i++) {
+      for (var j = 2; j >= 0; j--) {
+        if (j == 0) {
+          $scope.box.cells[i][j] = "";
+        }
+        else {
+          $scope.box.cells[i][j] = $scope.box.cells[i][j-1];
+        }
+      }
+    }
+    $scope.animate();
+    $scope.switchTurn();
+    $scope.right = true;
+  };
+ 
+  $scope.attackLeft = function() {
+   if ($scope.left){
+      alert("You can only use this option once!");
+      return
+    }
+   else if (!$scope.box.player1_turn) {
+      if (playerCount % 2 == 1) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    else if ($scope.box.player1_turn) {
+      if (playerCount != 0 && playerCount % 2 == 0) {
+        alert("You cannot go twice in a row!");
+        return
+      }
+    }
+    console.log("attack left ran");
+    for (var i = 0; i < $scope.num_check; i++) {
+      for (var j = 0; j < $scope.num_check; j++) {
+        if (j == 2) {
+          $scope.box.cells[i][j] = "";
+        }
+        else {
+          $scope.box.cells[i][j] = $scope.box.cells[i][j+1];
+        }
+      }
+    }
+    $scope.animate();
+    $scope.switchTurn();
+    $scope.left = true;
+  };
+
+
 }]);

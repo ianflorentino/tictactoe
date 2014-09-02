@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html ng-app="ticTacColor">
+<html ng-app="ticTacFighter">
 	<head>
 		<meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -11,7 +11,6 @@
 		<![endif]-->
 
   <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.js"></script>
 	<!-- Firebase -->
@@ -23,16 +22,10 @@
 	</head>
 
 	<body ng-controller="ticTacController">	 
-		<div class="divider" id="left">
-			<div class="player header" id="p1">
-        Player 1 Wins: {{ box.player1_score }}
-			</div>
-			<div class="character" ng-class="animate()" id="left-char"></div>
-		</div>	
 		<div class="playing-field divider">
       <div class="winPrompt mainboard" ng-show="ifWin()">
         <img class="game-over" src="images/gameover.png"> 
-        <input class="btn btn-danger reset" type="submit" value="Play Again" ng-click="reset()">
+        <input class="reset" type="submit" value="Play Again" ng-click="reset()">
       </div>
       <div class="game-board mainboard">
 				<div ng-repeat="block in box.cells">
@@ -41,22 +34,49 @@
 			</div>		
 		</div>
 		<div class="divider" id="right">
-			<div class="player header" id="p2">
-        Player 2 Wins: {{ box.player2_score }}
-			</div>
-			<div class="character" ng-class="animate()" id="right-char"></div>
+      <div class="right-board" id="background">
+        <div id="background-headline">
+          <img id="ko" src="images/KO.jpg"> 
+        </div>
+          <div class="scores" id="scores-p1">1P: {{box.player1_score}}</div>
+          <div class="scores" id="scores-p2">2P: {{box.player2_score}}</div>
+        <div id="right-board-char">
+          <div class="character" ng-class="animate()" id="left-char"></div> 
+			    <div class="character" ng-class="animate()" id="right-char"></div>
+        </div>
+      </div>
+      <div class="right-board" id="players-menu">
+        <div class="player-stat">
+          <div class="headline">ATTACK OPTIONS</div> 
+          <div class="right-btns">
+            <input class="buttons red" id="up" type="button" value="UP" ng-click="attackUp()"></br>
+            <input class="buttons red" id="middle" type="button" value="LEFT" ng-click="attackLeft()">
+            <input class="buttons blue" id="middle" type="button" value="RIGHT" ng-click="attackRight()"></br>
+            <input class="buttons blue" id="down" type="button" value="DOWN" ng-click="attackDown()">
+          </div>
+        </div>
+        <div class="player-stat">
+          <div class="headline">RULES</div>
+            <p>A player may choose an Attack Option in place of their turn. When you attack "UP", the pieces get shifted upwards, "DOWN", downwards, and so forth.</p>
+        </div>
+      </div> 
 		</div>
 		<div class="mobile-mode">
 			<div class="mobile-players">
-				<span id="mobile-p1">
-					Player 1</br>
+        <span id="mobile-p1">
+          1P: {{box.player1_score}}</br>
 					<div class="character" ng-class="animate()" id="left-char"></div>
 				</span>
-				<span id="mobile-p2">
-					Player 2</br>
+        <span id="mobile-p2">
+          2P: {{box.player2_score}}</br>
 					<div class="character" ng-class="animate()" id="right-char"></div>
 				</span>
-			</div>
+      </div>
+      <input class="buttons red" type="button" value="UP" ng-click="attackUp()">
+      <input class="buttons blue" type="button" value="DOWN" ng-click="attackDown()">
+      <input class="buttons red" type="button" value="LEFT" ng-click="attackLeft()">
+      <input class="buttons blue" type="button" value="RIGHT" ng-click="attackRight()">
+      </div>
 		</div>
 	</body>
 </html>
